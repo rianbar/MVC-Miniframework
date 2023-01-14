@@ -1,8 +1,20 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const routes = require('./routes');
 const path = require('path');
 const meuMiddleware = require('./src/Middlewares/meuMiddleware');
+
+//connection with data base
+const mongoose = require('mongoose');
+mongoose.connect(process.env.CONNECTIONSTRING, {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => {
+        console.log('conectado com a base de dados.');
+        app.emit('pronto');
+    }).catch(e => {
+        console.log(e);
+    });
 
 //libera acesso de métodos post
 app.use(express.urlencoded({ extended: true }))

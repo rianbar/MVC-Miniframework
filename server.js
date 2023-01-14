@@ -4,7 +4,8 @@ const express = require('express');
 const app = express();
 const routes = require('./routes');
 const path = require('path');
-const meuMiddleware = require('./src/Middlewares/meuMiddleware');
+const { middlewareGlobal, checkCsrfError } = require('./src/Middlewares/meuMiddleware');
+const csrf = require('csurf');
 
 //connection with data base
 const mongoose = require('mongoose');
@@ -19,6 +20,9 @@ mongoose.connect(process.env.CONNECTIONSTRING, {useNewUrlParser: true, useUnifie
 const session = require('express-session');
 const mongoStore = require('connect-mongo');
 const flash = require('connect-flash');
+
+//added security tools
+app.use(csrf());
 
 //libera acesso de métodos post
 app.use(express.urlencoded({ extended: true }))
@@ -49,7 +53,8 @@ app.set('view engine', 'ejs');
 app.use(routes);
 
 //setando global middlewares!
-app.use(meuMiddleware);
+app.use(middlewareGlobal);
+app.use(checkCsrfError);
 
 //setando o host!
 app.listen(3000, () => {

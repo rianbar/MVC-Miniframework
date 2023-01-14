@@ -10,6 +10,7 @@
     <form action="/" method="POST">
         <fieldset>
             <legend>Meu formulário</legend>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <label for="nome">Nome: </label>
             <input type="text" name="nome" id="nome">
             <label for="sobrenome">Sobrenome: </label>
